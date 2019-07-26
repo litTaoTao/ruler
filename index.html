@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title>尺子(ruler)</title>
 		<link rel="stylesheet" href="css/index.css">
-		<script src="https://cdn.bootcss.com/vConsole/3.3.2/vconsole.min.js"></script>
+		<!-- <script src="https://cdn.bootcss.com/vConsole/3.3.2/vconsole.min.js"></script> -->
 	</head>
 	<body>
 		<div>刻度:<span class="scroll_num">0</span></div>
@@ -29,7 +29,8 @@
 	let timer = null; // 定时器
 	let t1 = 0;
 	let t2 = 0;
-	document.getElementsByClassName('box')[0].onscroll = function(e) {
+	document.getElementsByClassName('box')[0].onscroll = function(event) {
+		event.preventDefault();
 		clearTimeout(timer);
 		t1 = this.scrollLeft;
 		timer = setTimeout(isScrollEnd, 500);
@@ -43,8 +44,8 @@
 		}
 	}
 </script>
-<script>
+<!-- <script>
   // init vConsole
   var vConsole = new VConsole();
   console.log('Hello world');
-</script> 
+</script> -->

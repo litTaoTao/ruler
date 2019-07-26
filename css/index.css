@@ -27,6 +27,8 @@
 .scale {
 	height: 100%;
 	display: flex;
+	position: relative;
+	z-index: 2;
 }
 
 .scale>div {
@@ -68,17 +70,17 @@
 	border-color: #A52A2A transparent transparent transparent;
 }
 .mask{
-	width: 220px;
+	width: 222px;
 	position: absolute;
 	left: 50%;
 	margin-left: -110px;
 	top:0;
 	display: flex;
 	justify-content: space-between;
-	z-index: -1;
+	/* z-index: -1; */
 }
 .mask>div{
 	width: 102px;
-	height: 70px;
+	height: 72px;
 	background: rgba(200,200,200,0.2);
 }
