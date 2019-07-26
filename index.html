@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>尺子(ruler)</title>
+		<link rel="stylesheet" href="css/index.css">
+		<script src="https://cdn.bootcss.com/vConsole/3.3.2/vconsole.min.js"></script>
+	</head>
+	<body>
+		<div>刻度:<span class="scroll_num">0</span></div>
+		<div class="container">
+			<div class="box">
+				<!-- 刻度 -->
+				<div class="scale"></div>
+				<!-- 指针 -->
+				<div class="Pointer"></div>
+				<!-- 遮罩 -->
+				<div class="mask">
+					<div></div>
+					<div></div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+<script src="js/index.js"></script>
+<script>
+	let timer = null; // 定时器
+	let t1 = 0;
+	let t2 = 0;
+	document.getElementsByClassName('box')[0].onscroll = function(e) {
+		clearTimeout(timer);
+		t1 = this.scrollLeft;
+		timer = setTimeout(isScrollEnd, 500);
+		document.getElementsByClassName('scroll_num')[0].innerHTML = Math.round(t1 / 11);
+	}
+	function isScrollEnd(scrollLeft) {
+		t2 = document.getElementsByClassName('box')[0].scrollLeft;
+		if (t2 === t1) {
+			document.getElementsByClassName('box')[0].scrollLeft = (document.getElementsByClassName('scroll_num')[0].innerHTML *
+				11);
+		}
+	}
+</script>
+<script>
+  // init vConsole
+  var vConsole = new VConsole();
+  console.log('Hello world');
+</script> 
