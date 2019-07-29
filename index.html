@@ -5,47 +5,63 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title>尺子(ruler)</title>
 		<link rel="stylesheet" href="css/index.css">
-		<!-- <script src="https://cdn.bootcss.com/vConsole/3.3.2/vconsole.min.js"></script> -->
 	</head>
 	<body>
-		<div>刻度:<span class="scroll_num">0</span></div>
-		<div class="container">
-			<div class="box">
-				<!-- 刻度 -->
-				<div class="scale"></div>
-				<!-- 指针 -->
-				<div class="Pointer"></div>
-				<!-- 遮罩 -->
-				<div class="mask">
-					<div></div>
-					<div></div>
-				</div>
-			</div>
-		</div>
+		<div class="rule"></div>
 	</body>
 </html>
-<script src="js/index.js"></script>
+<!-- <script src="js/index.js"></script> -->
 <script>
-	let timer = null; // 定时器
-	let t1 = 0;
-	let t2 = 0;
-	document.getElementsByClassName('box')[0].onscroll = function(event) {
-		event.preventDefault();
-		clearTimeout(timer);
-		t1 = this.scrollLeft;
-		timer = setTimeout(isScrollEnd, 500);
-		document.getElementsByClassName('scroll_num')[0].innerHTML = Math.round(t1 / 11);
+	let setting={
+		width			:300				,	//宽度
+		height			:90			,		//高度
+		minScale		:0					,	//最小刻度
+		maxscale		:200				,	//最大刻度
+		shortScaleLength:15					,	//短刻度长度
+		longScaleLength	:10					,	//长刻度长度
+		shortScaleColor	:'black'			,	//短刻度颜色
+		scaleSpace		:5					,	//刻度间隔
+		longScaleColor	:'black'			,	//长刻度颜色
+		bottomColor		:'1px solid black'	,	//下边框线颜色
+		// pointerColor	:						//指针颜色
 	}
-	function isScrollEnd(scrollLeft) {
-		t2 = document.getElementsByClassName('box')[0].scrollLeft;
-		if (t2 === t1) {
-			document.getElementsByClassName('box')[0].scrollLeft = (document.getElementsByClassName('scroll_num')[0].innerHTML *
-				11);
+	function insertOption(setting){
+		var html = "<div style='text-align: center;'>刻度:<span class='scroll_num'>0</span></div><div class='container' style='height:"+setting.height+"px;width:"+setting.width+"px;'><div class='box'><div class='scale'>";
+		for (i = setting.minScale; i <= setting.maxscale; i++) {
+			var flag = i % 5;
+			if (!flag) {
+				html += "<div style='padding:0 "+setting.scaleSpace+"px;border-bottom:"+setting.bottomColor+"'><span>"+i+"</span><div style='background:"+setting.shortScaleColor+";height:"+setting.shortScaleLength+"px'></div></div>";
+			} else {
+				html += "<div style='padding:0 "+setting.scaleSpace+"px;border-bottom:"+setting.bottomColor+"'><span></span><div style='background:"+setting.longScaleColor+";height:"+setting.longScaleLength+"px'></div></div>";
+			}
 		}
+		html+="</div><div class='Pointer'></div><div class='mask'><div style='width:"+(setting.width/2-10)+"px;'></div><div style='width:"+(setting.width/2-10)+"px;'></div></div></div></div>"
+		document.getElementsByClassName('rule')[0].innerHTML=html;
+		/* 样式 */
+		let elementScale=document.getElementsByClassName('scale')[0].childNodes;
+		elementScale[0].style.paddingLeft=setting.width/2-0.5+'px';
+		elementScale[elementScale.length-1].style.paddingRight=setting.width/2-0.5+'px';
 	}
+	function isScroll(){
+		let timer = null; // 定时器
+		let t1 = 0;
+		let t2 = 0;
+		/* 监听滚动停止 */
+		function isScrollEnd() {
+			t2 = document.getElementsByClassName('box')[0].scrollLeft;
+			if (t2 === t1) {
+				document.getElementsByClassName('box')[0].scrollLeft = (document.getElementsByClassName('scroll_num')[0].innerHTML *
+					(setting.scaleSpace*2+1));
+			}
+		}
+		document.getElementsByClassName('box')[0].onscroll = function(event) {
+			event.preventDefault();
+			clearTimeout(timer);
+			t1 = this.scrollLeft;
+			timer = setTimeout(isScrollEnd, 300);
+			document.getElementsByClassName('scroll_num')[0].innerHTML = Math.round(t1 / (setting.scaleSpace*2+1));
+		}
+	};
+	insertOption(setting)
+	isScroll();
 </script>
-<!-- <script>
-  // init vConsole
-  var vConsole = new VConsole();
-  console.log('Hello world');
-</script> -->
